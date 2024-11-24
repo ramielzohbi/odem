@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+event_mgmt_user,event.mgmt.user,model_event_mgmt,event_management.group_event_user,1,1,1,0
+event_mgmt_manager,event.mgmt.manager,model_event_mgmt,event_management.group_event_manager,1,1,1,1
+event_mgmt_category_user,event.mgmt.category.user,model_event_mgmt_category,event_management.group_event_user,1,1,1,0
+event_mgmt_category_manager,event.mgmt.category.manager,model_event_mgmt_category,event_management.group_event_manager,1,1,1,1
+event_mgmt_registration_user,event.mgmt.registration.user,model_event_mgmt_registration,event_management.group_event_user,1,1,1,0
+event_mgmt_registration_manager,event.mgmt.registration.manager,model_event_mgmt_registration,event_management.group_event_manager,1,1,1,1
+event_mgmt_category_field_user,event.mgmt.category.field.user,model_event_mgmt_category_field,event_management.group_event_user,1,0,0,0
+event_mgmt_category_field_manager,event.mgmt.category.field.manager,model_event_mgmt_category_field,event_management.group_event_manager,1,1,1,1

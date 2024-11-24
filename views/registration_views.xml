@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Registration Form View -->
+    <record id="view_event_registration_form" model="ir.ui.view">
+        <field name="name">event.mgmt.registration.form</field>
+        <field name="model">event.mgmt.registration</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" string="Submit" type="object" 
+                            states="draft" class="oe_highlight"/>
+                    <button name="action_approve" string="Approve" type="object" 
+                            states="pending" class="oe_highlight" 
+                            groups="event_management.group_event_manager"/>
+                    <button name="action_reject" string="Reject" type="object" 
+                            states="pending" 
+                            groups="event_management.group_event_manager"/>
+                    <button name="print_badge" string="Print Badge" type="object"
+                            states="approved" class="oe_highlight"
+                            attrs="{'invisible': [('badge_printed', '=', True)]}"/>
+                    <button name="reprint_badge" string="Reprint Badge" type="object"
+                            states="approved" groups="event_management.group_event_manager"
+                            attrs="{'invisible': [('badge_printed', '=', False)]}"/>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="draft,pending,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="event_id" readonly="context.get('from_event')"/>
+                            <field name="category_id" 
+                                   domain="[('event_id', '=', event_id)]"/>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                        </group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="company"/>
+                            <field name="job_title"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Documents" name="documents">
+                            <group>
+                                <group string="Photo" name="photo_group">
+                                    <field name="photo" widget="image"/>
+                                    <field name="photo_validated"/>
+                                </group>
+                                <group string="ID Document" name="id_group">
+                                    <field name="id_document" widget="image"/>
+                                    <field name="id_validated"/>
+                                </group>
+                            </group>
+                            <group string="AI Validation Results" attrs="{'invisible': [('ai_validation_result', '=', False)]}">
+                                <field name="ai_validation_result" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Custom Fields" name="custom_fields">
+                            <field name="custom_field_values"/>
+                        </page>
+                        <page string="Files" name="files">
+                            <field name="registration_files">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="field_key"/>
+                                    <field name="file_type"/>
+                                    <field name="file_size"/>
+                                    <field name="create_date"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Badge" name="badge" attrs="{'invisible': [('state', '!=', 'approved')]}">
+                            <group>
+                                <field name="badge_printed"/>
+                                <field name="badge_printed_by"/>
+                                <field name="badge_printed_date"/>
+                            </group>
+                        </page>
+                        <page string="Rejection" name="rejection" attrs="{'invisible': [('state', '!=', 'rejected')]}">
+                            <group>
+                                <field name="rejection_reason" attrs="{'required': [('state', '=', 'rejected')]}"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Registration Tree View -->
+    <record id="view_event_registration_tree" model="ir.ui.view">
+        <field name="name">event.mgmt.registration.tree</field>
+        <field name="model">event.mgmt.registration</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state=='draft'" 
+                  decoration-warning="state=='pending'"
+                  decoration-success="state=='approved'" 
+                  decoration-danger="state=='rejected'">
+                <field name="name"/>
+                <field name="event_id"/>
+                <field name="category_id"/>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="email"/>
+                <field name="state"/>
+                <field name="create_date"/>
+                <field name="badge_printed"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Registration Search View -->
+    <record id="view_event_registration_search" model="ir.ui.view">
+        <field name="name">event.mgmt.registration.search</field>
+        <field name="model">event.mgmt.registration</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="email"/>
+                <field name="event_id"/>
+                <field name="category_id"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Rejected" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter string="Badge Not Printed" name="badge_not_printed" 
+                        domain="[('badge_printed', '=', False), ('state', '=', 'approved')]"/>
+                <filter string="Today" name="today" 
+                        domain="[('create_date', '>=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))),
+                                ('create_date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Event" name="group_by_event" context="{'group_by': 'event_id'}"/>
+                    <filter string="Category" name="group_by_category" context="{'group_by': 'category_id'}"/>
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Registration Date" name="group_by_create_date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Registration Pivot View -->
+
+    <record id="view_event_registration_pivot" model="ir.ui.view">
+        <field name="name">event.mgmt.registration.pivot</field>
+        <field name="model">event.mgmt.registration</field>
+        <field name="arch" type="xml">
+            <pivot string="Registration Analysis">
+                <field name="state" type="row"/>
+                <field name="id" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+
+</odoo>

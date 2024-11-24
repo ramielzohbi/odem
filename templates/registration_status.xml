@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="registration_status" name="Registration Status">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="web.assets_common"/>
+                <t t-call-assets="web.assets_frontend"/>
+            </t>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <h2>Registration Status</h2>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Registration Number:</strong> <span t-field="registration.name"/></p>
+                                        <p><strong>Name:</strong> <span t-field="registration.first_name"/> <span t-field="registration.last_name"/></p>
+                                        <p><strong>Email:</strong> <span t-field="registration.email"/></p>
+                                        <p><strong>Status:</strong> <span t-field="registration.state"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

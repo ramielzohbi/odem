@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Event Sequence -->
+        <record id="seq_event_mgmt" model="ir.sequence">
+            <field name="name">Event Sequence</field>
+            <field name="code">event.mgmt</field>
+            <field name="prefix">EV/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <!-- Registration Sequence -->
+        <record id="seq_event_mgmt_registration" model="ir.sequence">
+            <field name="name">Registration Sequence</field>
+            <field name="code">event.mgmt.registration</field>
+            <field name="prefix">REG/%(year)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

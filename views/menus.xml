@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_event_view" model="ir.actions.act_window">
+        <field name="name">Events</field>
+        <field name="res_model">event.mgmt</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first event!
+            </p>
+        </field>
+    </record>
+
+    <record id="action_category_view" model="ir.actions.act_window">
+        <field name="name">Categories</field>
+        <field name="res_model">event.mgmt.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first event category!
+            </p>
+        </field>
+    </record>
+
+    <record id="action_registration_view" model="ir.actions.act_window">
+        <field name="name">Registrations</field>
+        <field name="res_model">event.mgmt.registration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No registrations yet!
+            </p>
+        </field>
+    </record>
+
+    <!-- Main Menu -->
+    <menuitem id="menu_event_mgmt_root"
+              name="diggri event management"
+              web_icon="event_management,static/description/icon.png"
+              sequence="65"/>
+
+    <!-- Event Configuration Menu -->
+    <menuitem id="menu_event_mgmt_config"
+              name="Configuration"
+              parent="menu_event_mgmt_root"
+              sequence="100"
+              groups="event_management.group_event_manager"/>
+
+    <!-- Event Menu -->
+    <menuitem id="menu_event_mgmt"
+              name="Events"
+              parent="menu_event_mgmt_root"
+              sequence="10"/>
+
+    <!-- Events Sub-menu -->
+    <menuitem id="menu_event_mgmt_events"
+              name="Events"
+              parent="menu_event_mgmt"
+              action="action_event_mgmt"
+              sequence="10"/>
+
+    <menuitem id="menu_event_mgmt_categories"
+              name="Categories"
+              parent="menu_event_mgmt"
+              action="action_event_category"
+              sequence="20"/>
+
+    <!-- Registration Menu -->
+    <menuitem id="menu_event_mgmt_registration"
+              name="Registrations"
+              parent="menu_event_mgmt_root"
+              sequence="20"/>
+
+    <menuitem id="menu_event_mgmt_all_registrations"
+              name="All Registrations"
+              parent="menu_event_mgmt_registration"
+              action="action_event_registration"
+              sequence="10"/>
+
+    <menuitem id="menu_event_mgmt_pending_registrations"
+              name="Pending Approvals"
+              parent="menu_event_mgmt_registration"
+              action="action_event_registration"
+              context="{'search_default_pending': 1}"
+              sequence="20"/>
+
+    <!-- Reports Menu -->
+    <menuitem id="menu_event_mgmt_reports"
+              name="Reports"
+              parent="menu_event_mgmt_root"
+              sequence="30"/>
+
+    <menuitem id="menu_event_mgmt_analysis"
+              name="Registration Analysis"
+              parent="menu_event_mgmt_reports"
+              action="action_event_registration_analysis"
+              sequence="10"/>
+
+</odoo>
+
